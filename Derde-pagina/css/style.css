@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#banner {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    position: relative;
+}
+
+.karakters {
+    position: absolute;
+    bottom: 10%; /* Zorgt dat ze op de grond staan */
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Plaatst alles in het midden */
+    gap: 15%; /* Ruimte tussen de karakters */
+}
+
+.karakters img {
+    width: 12%; /* Niet te groot */
+    max-width: 180px;
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.5)); /* Zorgt dat ze beter zichtbaar zijn */
+    position: relative;
+}
+
+/* Startpositie */
+#character-left {
+    left: -20%; /* Start buiten beeld links */
+    animation: walk-left 3s forwards ease-in-out;
+}
+
+#character-right {
+    right: -20%; /* Start buiten beeld rechts */
+    animation: walk-right 3s forwards ease-in-out;
+}
+
+/* Animatie naar de struik */
+@keyframes walk-left {
+    0% { left: -20%; opacity: 0; }
+    100% { left: 0%; opacity: 1; }
+}
+
+@keyframes walk-right {
+    0% { right: -20%; opacity: 0; }
+    100% { right: 0%; opacity: 1; }
+}
