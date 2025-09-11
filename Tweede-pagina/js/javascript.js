@@ -22,22 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Swirl effect, wrapper groeit en draait alles samen
     setTimeout(() => {
-        swirl.classList.add("active");
-        wrapper.classList.add("grow");
-        // Eerst swirl animatie (2s), dan extra delay (0.7s), dan redirect
-        setTimeout(() => {
-            window.location.href = "../../Derde-pagina/html/index.html";
-        }, 1500); // 2s animatie + 0.7s extra delay
-    }, 6400);
-
-    // Klik op deur of gloed: direct swirl effect en redirect met delay
-    [door, glow].forEach(el => {
-        el.addEventListener("click", () => {
-            swirl.classList.add("active");
-            wrapper.classList.add("grow");
-            setTimeout(() => {
-                window.location.href = "../../Derde-pagina/html/index.html";
-            }, 2700);
-        });
-    });
+        characterRight.style.position = "absolute";
+        characterRight.style.left = "50%";
+        characterRight.style.transform = "translateX(-50%)";
+        characterRight.style.bottom = "15%";
+    }, 3000);
 });
