@@ -1,37 +1,43 @@
 document.addEventListener("DOMContentLoaded", function () {
     const characterLeft = document.getElementById("character-left");
     const characterRight = document.getElementById("character-right");
+    const door = document.getElementById("door");
+    const swirl = document.getElementById("swirl-effect");
+    const glow = document.getElementById("door-glow");
+    const wrapper = document.getElementById("door-wrapper");
 
-    function jump(character) {
-        let jumpHeight = 80; // Hoe hoog ze springen
-        let duration = 500; // Hoe lang de sprong duurt
+    // Na het lopen: karakters zwaaien kort
+    setTimeout(() => {
+        characterLeft.classList.add("wave");
+        characterRight.classList.add("wave");
+    }, 4200); // aangepast aan langere loopduur
 
-        // Eerst omhoog springen
-        character.style.transition = `transform ${duration / 1000}s ease-out`;
-        character.style.transform = `translateY(-${jumpHeight}px)`;
+    // Na het zwaaien: deur opent, gloed verschijnt, karakters verdwijnen
+    setTimeout(() => {
+        door.classList.add("open");
+        glow.classList.add("active");
+        characterLeft.classList.add("fade-out");
+        characterRight.classList.add("fade-out");
+    }, 5200);
 
-        // Na een korte tijd weer naar beneden laten zakken
+    // Swirl effect, wrapper groeit en draait alles samen
+    setTimeout(() => {
+        swirl.classList.add("active");
+        wrapper.classList.add("grow");
+        // Eerst swirl animatie (2s), dan extra delay (0.7s), dan redirect
         setTimeout(() => {
-            character.style.transform = "translateY(0)";
-        }, duration);
-    }
+            window.location.href = "../../Vierde-pagina/html/index.html";
+        }, 1500); // 2s animatie + 0.7s extra delay
+    }, 6400);
 
-    function startJumpAnimation() {
-        jump(characterLeft);
-        jump(characterRight);
-    }
-
-    let animationsCompleted = 0;
-
-    function checkIfWalkFinished(event) {
-        if (event.animationName === "walk-left" || event.animationName === "walk-right") {
-            animationsCompleted++;
-            if (animationsCompleted === 2) {
-                setTimeout(startJumpAnimation, 500); // Wacht een halve seconde en laat ze dan springen
-            }
-        }
-    }
-
-    characterLeft.addEventListener("animationend", checkIfWalkFinished);
-    characterRight.addEventListener("animationend", checkIfWalkFinished);
+    // Klik op deur of gloed: direct swirl effect en redirect met delay
+    [door, glow].forEach(el => {
+        el.addEventListener("click", () => {
+            swirl.classList.add("active");
+            wrapper.classList.add("grow");
+            setTimeout(() => {
+                window.location.href = "../../Vierde-pagina/html/index.html";
+            }, 2700);
+        });
+    });
 });

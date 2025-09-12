@@ -22,38 +22,252 @@ body {
 
 .karakters {
     position: absolute;
-    bottom: 10%; /* Zorgt dat ze op de grond staan */
+    bottom: 10%;
     width: 100%;
     display: flex;
-    justify-content: center; /* Plaatst alles in het midden */
-    gap: 15%; /* Ruimte tussen de karakters */
+    justify-content: center;
+    gap: 0; /* Geen ruimte tussen de karakters, zodat ze bij de deur samenkomen */
+    pointer-events: none;
 }
 
 .karakters img {
-    width: 12%; /* Niet te groot */
+    width: 12%;
     max-width: 180px;
-    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.5)); /* Zorgt dat ze beter zichtbaar zijn */
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.5));
     position: relative;
 }
 
-/* Startpositie */
 #character-left {
-    left: -20%; /* Start buiten beeld links */
-    animation: walk-left 3s forwards ease-in-out;
+    position: absolute;
+    left: -15%; /* Start buiten beeld links */
+    animation: walk-to-door-left 4.5s forwards ease-in-out;
+    bottom: 28%; /* Hoger zodat ze bij de deur uitkomen */
 }
 
 #character-right {
-    right: -20%; /* Start buiten beeld rechts */
-    animation: walk-right 3s forwards ease-in-out;
+    position: absolute;
+    right: -15%; /* Start buiten beeld rechts */
+    animation: walk-to-door-right 4.5s forwards ease-in-out;
+    bottom: 28%; /* Hoger zodat ze bij de deur uitkomen */
 }
 
-/* Animatie naar de struik */
-@keyframes walk-left {
-    0% { left: -20%; opacity: 0; }
-    100% { left: 0%; opacity: 1; }
+@keyframes walk-to-door-left {
+    0% { left: -15%; opacity: 0; }
+    100% { left: 44%; opacity: 1; }
 }
 
-@keyframes walk-right {
-    0% { right: -20%; opacity: 0; }
-    100% { right: 0%; opacity: 1; }
+@keyframes walk-to-door-right {
+    0% { right: -15%; opacity: 0; }
+    100% { right: 44%; opacity: 1; }
+}
+
+/* Optioneel: stijl voor de deur */
+#door {
+    position: absolute;
+    left: 50%;
+    bottom: 32.5%;
+    transform: translateX(-50%);
+    width: 17vw;
+    max-width: 340px;
+    z-index: 5;
+    transition: transform 1s;
+}
+
+#door.open {
+    transform: translateX(-50%) rotateY(70deg); /* Simuleer openzwaaien */
+}
+
+/* Deur-glow altijd even groot als deur, groeit en draait mee */
+#door-glow {
+    position: absolute;
+    left: 50%;
+    bottom: 32.5%;
+    transform: translateX(-50%);
+    width: 17vw;
+    max-width: 340px;
+    aspect-ratio: 3/5;
+    height: auto;
+    border-radius: 12% 12% 16% 16%/10% 10% 20% 20%;
+    background: radial-gradient(ellipse at 50% 60%, rgba(180,160,255,0.55) 0%, rgba(180,160,255,0.18) 60%, transparent 100%);
+    box-shadow: 0 0 32px 16px rgba(180,160,255,0.18), 0 0 80px 40px rgba(140,120,255,0.12);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+    transition: opacity 1s, width 1.2s, height 1.2s, transform 1.2s;
+}
+#door-glow.active {
+    opacity: 1;
+    animation: door-glow-pulse 2.2s infinite alternate;
+}
+@keyframes door-glow-pulse {
+    0% { opacity: 0.8; filter: blur(0px);}
+    100% { opacity: 1; filter: blur(4px);}
+}
+
+/* Swirl effect alleen op de deur, groeit en draait mee */
+#swirl-effect {
+    position: absolute;
+    left: 50%;
+    bottom: 32.5%;
+    transform: translateX(-50%);
+    width: 17vw;
+    max-width: 340px;
+    aspect-ratio: 3/5;
+    height: auto;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0;
+    background: radial-gradient(circle at 50% 50%, #cbb6ff 0%, #a084e8 40%, #7c4dff 70%, #000 100%);
+    filter: blur(0px);
+    clip-path: circle(0% at 50% 50%);
+    transition: opacity 0.2s;
+}
+
+#swirl-effect.active {
+    opacity: 1;
+    animation: swirl-door-grow-rotate 1.2s cubic-bezier(.7,0,.3,1) forwards;
+}
+
+@keyframes swirl-door-grow-rotate {
+    0% {
+        clip-path: circle(0% at 50% 50%);
+        filter: blur(0px);
+        transform: translateX(-50%) scale(1) rotate(0deg);
+    }
+    80% {
+        clip-path: circle(80% at 50% 50%);
+        filter: blur(8px);
+        transform: translateX(-50%) scale(1.08) rotate(540deg);
+    }
+    100% {
+        clip-path: circle(150% at 50% 50%);
+        filter: blur(16px);
+        transform: translateX(-50%) scale(12) rotate(1080deg);
+    }
+}
+
+/* Deur groeit en draait mee met swirl */
+#door.grow,
+#door-glow.grow {
+    transition: transform 1.2s cubic-bezier(.7,0,.3,1), width 1.2s, height 1.2s;
+    transform: translateX(-50%) scale(12) rotate(1080deg);
+    z-index: 1000;
+}
+
+/* Karakter zwaaien */
+@keyframes wave-hand {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-10deg); }
+    40% { transform: rotate(10deg); }
+    60% { transform: rotate(-10deg); }
+    80% { transform: rotate(10deg); }
+}
+#character-left.wave, #character-right.wave {
+    animation: wave-hand 0.8s;
+}
+
+/* Karakters verdwijnen */
+.fade-out {
+    animation: fadeOut 1s forwards;
+}
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
+
+/* Wrapper altijd gecentreerd op de juiste plek */
+#door-wrapper {
+    position: absolute;
+    left: 58.2%;
+    bottom: 31.5%;
+    transform: translateX(-50%);
+    width: 17vw;
+    max-width: 340px;
+    aspect-ratio: 3/5;
+    height: auto;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+/* Deur, glow en swirl vullen wrapper exact */
+#door, #door-glow, #swirl-effect {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+#door {
+    z-index: 3;
+    pointer-events: auto;
+}
+#door-glow {
+    z-index: 2;
+    opacity: 0;
+    border-radius: 12% 12% 16% 16%/10% 10% 20% 20%;
+    background: radial-gradient(ellipse at 50% 60%, rgba(180,160,255,0.55) 0%, rgba(180,160,255,0.18) 60%, transparent 100%);
+    box-shadow: 0 0 32px 16px rgba(180,160,255,0.18), 0 0 80px 40px rgba(140,120,255,0.12);
+    transition: opacity 1s;
+}
+#door-glow.active {
+    opacity: 1;
+    animation: door-glow-pulse 2.2s infinite alternate;
+}
+@keyframes door-glow-pulse {
+    0% { opacity: 0.8; filter: blur(0px);}
+    100% { opacity: 1; filter: blur(4px);}
+}
+
+/* Swirl effect professioneel, draait en groeit uit deur */
+#swirl-effect {
+    z-index: 4;
+    opacity: 0;
+    background: radial-gradient(circle at 50% 50%, #e0c3fc 0%, #8ec5fc 40%, #7c4dff 80%, #000 100%);
+    filter: blur(0px);
+    clip-path: circle(0% at 50% 50%);
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+#swirl-effect.active {
+    opacity: 1;
+    animation: swirl-door-grow-rotate-pro 2s cubic-bezier(.7,0,.3,1) forwards, swirl-fadeout 0.4s 1.9s forwards;
+}
+
+@keyframes swirl-door-grow-rotate-pro {
+    0% {
+        clip-path: circle(0% at 50% 50%);
+        filter: blur(0px);
+        transform: scale(1) rotate(0deg);
+    }
+    60% {
+        clip-path: circle(80% at 50% 50%);
+        filter: blur(8px);
+        transform: scale(1.1) rotate(540deg);
+    }
+    100% {
+        clip-path: circle(150% at 50% 50%);
+        filter: blur(16px);
+        transform: scale(12) rotate(1080deg);
+    }
+}
+@keyframes swirl-fadeout {
+    to { opacity: 0; }
+}
+
+#door-wrapper.grow {
+    animation: wrapper-grow-rotate-pro 2s cubic-bezier(.7,0,.3,1) forwards;
+}
+@keyframes wrapper-grow-rotate-pro {
+    0% {
+        transform: translateX(-50%) scale(1) rotate(0deg);
+    }
+    60% {
+        transform: translateX(-50%) scale(1.1) rotate(540deg);
+    }
+    100% {
+        transform: translateX(-50%) scale(12) rotate(1080deg);
+    }
 }
