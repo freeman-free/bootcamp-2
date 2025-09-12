@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         wrapper.classList.add("grow");
         // Eerst swirl animatie (2s), dan extra delay (0.7s), dan redirect
         setTimeout(() => {
-            window.location.href = "../../Derde-pagina/html/index.html";
+            window.location.href = "../../Vierde-pagina/html/index.html";
         }, 1500); // 2s animatie + 0.7s extra delay
     }, 6400);
 
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
             swirl.classList.add("active");
             wrapper.classList.add("grow");
             setTimeout(() => {
-                window.location.href = "../../Derde-pagina/html/index.html";
+                window.location.href = "../../Vierde-pagina/html/index.html";
             }, 2700);
         });
     });

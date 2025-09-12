@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.body.style.transition = "opacity 1s";
                     document.body.style.opacity = "0";
                     setTimeout(() => {
-                        window.location.href = "/Tweede-pagina/html/index.html";
+                        window.location.href = "/Derde-pagina/html/index.html";
                     }, 1000); // wacht tot fade-out klaar is
                 }, 2000); // wacht tot 'move-up' en een beetje 'float-key' klaar zijn
             }, 1000);
