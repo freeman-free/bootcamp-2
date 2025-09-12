@@ -1,42 +1,23 @@
-
-html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
 body {
-	min-height: 100vh;
-	min-width: 100vw;
-	position: relative;
-	overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-.banner-bg {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background-image: url('../../assets/bosje1.svg');
-		background-size: 120% auto;
-		background-position: center center;
-		background-repeat: no-repeat;
-		z-index: -1;
-		filter: brightness(0.98) saturate(1.1);
-		transition: background-size 0.3s;
-        object-fit: cover;
-        object-position: center;
+.full-page-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
 }
 
-@media (max-width: 900px) {
-	.banner-bg {
-		background-size: 150% auto;
-	}
-}
-
-@media (max-width: 600px) {
-	.banner-bg {
-		background-size: 200% auto;
-	}
+#banner {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    position: relative;
+    object-fit: cover;
+    object-position: center;
 }
