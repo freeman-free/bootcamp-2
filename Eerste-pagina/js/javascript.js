@@ -1,34 +1,42 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let charLeft = document.getElementById("character-left");
-    let charRight = document.getElementById("character-right");
-    let key = document.getElementById("key");
+document.addEventListener("DOMContentLoaded", () => {
+    const light = document.getElementById("golden-light");
+    const bush = document.getElementById("background");
+    let angle = 0;
+    let baseRadius = 40; // Start radius
+    let maxRadius = 80; // Max radius
+    let grow = true;
 
-    function startAnimation() {
-        // Voeg loop-animatie toe aan de karakters
-        charLeft.style.animation = "walk-left 3s linear forwards";
-        charRight.style.animation = "walk-right 3s linear forwards";
+    function animateLight() {
+        // Struik positie bepalen
+        const bushRect = bush.getBoundingClientRect();
+        const parentRect = bush.parentElement.getBoundingClientRect();
 
-        // Wacht tot de karakters klaar zijn, dan laat de sleutel eerst in de struik verschijnen
-        setTimeout(() => {
-            key.style.animation = "fade-in 1s ease-in-out forwards";
-            key.style.opacity = "1"; // Maakt de sleutel zichtbaar
+        // Center van de struik relatief aan de parent
+        const centerX = bush.offsetLeft + bush.width / 2;
+        const centerY = bush.offsetTop + bush.height / 2;
 
-            // Na 1 seconde gaat de sleutel omhoog en begint te zweven
-            setTimeout(() => {
-                key.style.animation = "move-up 1s ease-in-out forwards, float-key 2s infinite ease-in-out";
+        // Radius laten groeien en krimpen
+        if (grow) {
+            baseRadius += 0.4;
+            if (baseRadius >= maxRadius) grow = false;
+        } else {
+            baseRadius -= 0.4;
+            if (baseRadius <= 40) grow = true;
+        }
 
-                // Na alle animaties, ga naar een andere pagina (bijvoorbeeld 'next.html')
-                // Fade out de pagina voordat je navigeert
-                setTimeout(() => {
-                    document.body.style.transition = "opacity 1s";
-                    document.body.style.opacity = "0";
-                    setTimeout(() => {
-                        window.location.href = "/Tweede-pagina/html/index.html";
-                    }, 1000); // wacht tot fade-out klaar is
-                }, 2000); // wacht tot 'move-up' en een beetje 'float-key' klaar zijn
-            }, 1000);
-        }, 3000);
+        // Lichtje rond laten gaan
+        angle += 0.018;
+        const x = centerX + baseRadius * Math.cos(angle);
+        const y = centerY + baseRadius * Math.sin(angle);
+
+        light.style.left = `${x}px`;
+        light.style.top = `${y}px`;
+        // Lichtje ook iets groter/kleiner maken
+        const scale = 1 + (baseRadius - 40) / 80;
+        light.style.transform = `translate(-50%, -50%) scale(${scale})`;
+
+        requestAnimationFrame(animateLight);
     }
 
-    startAnimation();
+    animateLight();
 });

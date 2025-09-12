@@ -57,27 +57,3 @@ body {
     0% { right: -20%; opacity: 0; }
     100% { right: 0%; opacity: 1; }
 }
-
-#key {
-    position: absolute;
-    bottom: 10%; /* Begint laag in de struik */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10%; /* Iets groter */
-    max-width: 120px;
-    opacity: 0;
-    z-index: 6;
-}
-
-/* Sleutel beweegt omhoog uit de struik */
-@keyframes move-up {
-    0% { bottom: 10%; }
-    100% { bottom: 35%; } /* Gaat boven de struik zweven */
-}
-
-/* Sleutel zweeft zachtjes op en neer */
-@keyframes float-key {
-    0% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-10px); }
-    100% { transform: translateX(-50%) translateY(0); }
-}

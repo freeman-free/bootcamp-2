@@ -1,43 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const characterLeft = document.getElementById("character-left");
-    const characterRight = document.getElementById("character-right");
-    const door = document.getElementById("door");
-    const swirl = document.getElementById("swirl-effect");
-    const glow = document.getElementById("door-glow");
-    const wrapper = document.getElementById("door-wrapper");
+    let charLeft = document.getElementById("character-left");
+    let charRight = document.getElementById("character-right");
+    let key = document.getElementById("key");
 
-    // Na het lopen: karakters zwaaien kort
-    setTimeout(() => {
-        characterLeft.classList.add("wave");
-        characterRight.classList.add("wave");
-    }, 4200); // aangepast aan langere loopduur
+    function startAnimation() {
+        // Voeg loop-animatie toe aan de karakters
+        charLeft.style.animation = "walk-left 3s linear forwards";
+        charRight.style.animation = "walk-right 3s linear forwards";
 
-    // Na het zwaaien: deur opent, gloed verschijnt, karakters verdwijnen
-    setTimeout(() => {
-        door.classList.add("open");
-        glow.classList.add("active");
-        characterLeft.classList.add("fade-out");
-        characterRight.classList.add("fade-out");
-    }, 5200);
-
-    // Swirl effect, wrapper groeit en draait alles samen
-    setTimeout(() => {
-        swirl.classList.add("active");
-        wrapper.classList.add("grow");
-        // Eerst swirl animatie (2s), dan extra delay (0.7s), dan redirect
+        // Wacht tot de karakters klaar zijn, dan laat de sleutel eerst in de struik verschijnen
         setTimeout(() => {
-            window.location.href = "../../Derde-pagina/html/index.html";
-        }, 1500); // 2s animatie + 0.7s extra delay
-    }, 6400);
+            key.style.animation = "fade-in 1s ease-in-out forwards";
+            key.style.opacity = "1"; // Maakt de sleutel zichtbaar
 
-    // Klik op deur of gloed: direct swirl effect en redirect met delay
-    [door, glow].forEach(el => {
-        el.addEventListener("click", () => {
-            swirl.classList.add("active");
-            wrapper.classList.add("grow");
+            // Na 1 seconde gaat de sleutel omhoog en begint te zweven
             setTimeout(() => {
-                window.location.href = "../../Derde-pagina/html/index.html";
-            }, 2700);
-        });
-    });
+                key.style.animation = "move-up 1s ease-in-out forwards, float-key 2s infinite ease-in-out";
+
+                // Na alle animaties, ga naar een andere pagina (bijvoorbeeld 'next.html')
+                // Fade out de pagina voordat je navigeert
+                setTimeout(() => {
+                    document.body.style.transition = "opacity 1s";
+                    document.body.style.opacity = "0";
+                    setTimeout(() => {
+                        window.location.href = "/Tweede-pagina/html/index.html";
+                    }, 1000); // wacht tot fade-out klaar is
+                }, 2000); // wacht tot 'move-up' en een beetje 'float-key' klaar zijn
+            }, 1000);
+        }, 3000);
+    }
+
+    startAnimation();
 });
